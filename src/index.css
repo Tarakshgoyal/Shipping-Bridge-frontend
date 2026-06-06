@@ -1,0 +1,41 @@
+:root {
+  --surface: #11131b;
+  --surface-lowest: #0c0e16;
+  --surface-container-low: #191b23;
+  --surface-container: #1d1f27;
+  --surface-container-high: #282a32;
+  --on-surface: #e1e2ed;
+  --on-surface-variant: #c3c6d7;
+  --outline: #8d90a0;
+  --outline-variant: #434655;
+  --primary: #b4c5ff;
+  --primary-container: #2563eb;
+  --on-primary-container: #eeefff;
+  --secondary: #4edea3;
+  --tertiary: #c0c1ff;
+  --error: #ffb4ab;
+  --sans: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+  color: var(--on-surface);
+  background: var(--surface);
+  font-family: var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}

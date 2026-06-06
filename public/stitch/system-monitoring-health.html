@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>System Monitoring &amp; Health</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@450;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e1e2ed",
+                        "tertiary-container": "#585be6",
+                        "on-tertiary-fixed-variant": "#2f2ebe",
+                        "inverse-primary": "#0053db",
+                        "tertiary": "#c0c1ff",
+                        "on-background": "#e1e2ed",
+                        "secondary-container": "#00a572",
+                        "on-primary": "#002a78",
+                        "surface-container-highest": "#32343d",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-tertiary-fixed": "#07006c",
+                        "primary": "#b4c5ff",
+                        "on-secondary-fixed": "#002113",
+                        "primary-container": "#2563eb",
+                        "surface-container-lowest": "#0c0e16",
+                        "surface-bright": "#373942",
+                        "secondary": "#4edea3",
+                        "surface-dim": "#11131b",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "tertiary-fixed": "#e1e0ff",
+                        "on-tertiary-container": "#f1eeff",
+                        "on-secondary-container": "#00311f",
+                        "secondary-fixed": "#6ffbbe",
+                        "inverse-on-surface": "#2e3039",
+                        "outline-variant": "#434655",
+                        "on-primary-container": "#eeefff",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#005236",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "surface-container-high": "#282a32",
+                        "tertiary-fixed-dim": "#c0c1ff",
+                        "background": "#11131b",
+                        "surface-container-low": "#191b23",
+                        "on-secondary": "#003824",
+                        "surface": "#11131b",
+                        "surface-tint": "#b4c5ff",
+                        "on-error": "#690005",
+                        "surface-variant": "#32343d",
+                        "surface-container": "#1d1f27",
+                        "on-primary-fixed": "#00174b",
+                        "on-surface": "#e1e2ed",
+                        "on-surface-variant": "#c3c6d7",
+                        "primary-fixed": "#dbe1ff",
+                        "outline": "#8d90a0",
+                        "on-tertiary": "#1000a9",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "md": "16px",
+                        "xl": "40px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["12px", { "lineHeight": "1.5", "fontWeight": "450" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-md": ["14px", { "lineHeight": "1.6", "fontWeight": "450" }],
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-caps": ["11px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .pulse-green {
+            animation: pulse-green-animation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-green-animation {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.1); }
+        }
+        
+        /* Grid Background Pattern */
+        .bg-grid-pattern {
+            background-size: 24px 24px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-primary font-body-sm text-body-sm fixed top-0 right-0 w-[calc(100%-280px)] border-b border-outline-variant dark:border-outline-variant flex justify-between items-center h-16 px-lg ml-[280px] z-50">
+<div class="font-headline-md text-headline-md font-extrabold text-on-surface dark:text-on-surface">
+            Shipping Bridge
+        </div>
+<div class="flex items-center gap-md">
+<button class="hover:text-primary dark:hover:text-primary transition-all duration-150 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="hover:text-primary dark:hover:text-primary transition-all duration-150 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">terminal</span>
+</button>
+<button class="hover:text-primary dark:hover:text-primary transition-all duration-150 text-on-surface-variant dark:text-on-surface-variant">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="bg-surface-container dark:bg-surface-container text-primary dark:text-primary font-body-md text-body-md fixed h-full w-[280px] left-0 top-0 border-r border-outline-variant dark:border-outline-variant flex flex-col h-screen py-lg z-50">
+<div class="px-md mb-lg flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-headline-md">rocket_launch</span>
+<div>
+<div class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">Shipping Bridge</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">v2.4.0-STABLE</div>
+</div>
+</div>
+<div class="flex-grow flex flex-col gap-xs mt-md">
+<!-- Inactive Tab -->
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">api</span>
+                API Portal
+            </a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">reorder</span>
+                Orders
+            </a>
+<!-- Inactive Tab -->
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant dark:hover:bg-surface-variant transition-colors duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">local_shipping</span>
+                Tracking
+            </a>
+<!-- Active Tab -->
+<a class="flex items-center gap-md px-md py-sm text-primary dark:text-primary border-r-2 border-primary font-bold bg-surface-variant/30" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+                Monitoring
+            </a>
+</div>
+<div class="px-md py-md mt-auto">
+<button class="w-full bg-primary-container text-on-primary-container font-code-sm text-code-sm py-sm rounded border border-primary/20 hover:bg-primary-container/90 transition-colors duration-200 text-center">
+                Generate API Key
+            </button>
+</div>
+<div class="flex flex-col gap-xs px-md pt-sm border-t border-outline-variant mt-sm">
+<a class="flex items-center gap-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-md py-sm text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-variant transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">help_outline</span>
+                Support
+            </a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-[280px] pt-16 min-h-screen bg-background bg-grid-pattern relative">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-background/90 pointer-events-none"></div>
+<div class="relative max-w-container-max mx-auto p-lg md:p-xl space-y-lg">
+<!-- Page Header -->
+<div class="mb-xl">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-sm">System Health</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Real-time telemetry and connectivity status for critical logistics integrations.</p>
+</div>
+<!-- Top Row: Critical Metrics Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<!-- Uptime Card -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-lg relative overflow-hidden flex flex-col justify-between">
+<div class="flex justify-between items-start mb-lg">
+<div>
+<h2 class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-wider mb-base">API Uptime</h2>
+<div class="font-display-lg text-display-lg text-secondary">99.99%</div>
+</div>
+<div class="w-2 h-2 rounded-full bg-secondary pulse-green shadow-[0_0_8px_rgba(78,222,163,0.8)]"></div>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-code-sm text-secondary">trending_up</span>
+                        Last 30 days
+                    </div>
+<!-- Decorative chart sparkline background -->
+<div class="absolute bottom-0 left-0 right-0 h-16 opacity-20 pointer-events-none" style="background: linear-gradient(to top, var(--tw-colors-secondary), transparent);">
+<svg class="w-full h-full text-secondary stroke-current fill-none stroke-2" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0,20 L10,15 L20,18 L30,10 L40,12 L50,5 L60,8 L70,2 L80,6 L90,1 L100,5"></path>
+</svg>
+</div>
+</div>
+<!-- Avg Response Time Card -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-lg flex flex-col justify-between">
+<div class="flex justify-between items-start mb-lg">
+<div>
+<h2 class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-wider mb-base">Avg Response</h2>
+<div class="font-display-lg text-display-lg text-primary">142<span class="font-body-md text-body-md text-on-surface-variant ml-xs">ms</span></div>
+</div>
+<span class="material-symbols-outlined text-primary">speed</span>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-code-sm text-secondary">arrow_downward</span>
+                        12ms vs last week
+                    </div>
+</div>
+<!-- Connections Status Bento -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-lg flex flex-col gap-sm">
+<h2 class="font-code-sm text-code-sm text-on-surface-variant uppercase tracking-wider mb-sm">Upstream Providers</h2>
+<div class="bg-surface-container border border-outline-variant rounded p-sm flex items-center justify-between hover:border-primary transition-colors">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="font-label-caps text-label-caps text-on-surface">SR</span>
+</div>
+<span class="font-code-md text-code-md text-on-surface">Shiprocket API</span>
+</div>
+<div class="flex items-center gap-xs text-secondary font-code-sm text-code-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+                            Connected
+                        </div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded p-sm flex items-center justify-between hover:border-primary transition-colors">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="font-label-caps text-label-caps text-on-surface">DL</span>
+</div>
+<span class="font-code-md text-code-md text-on-surface">Delhivery API</span>
+</div>
+<div class="flex items-center gap-xs text-secondary font-code-sm text-code-sm">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary"></div>
+                            Connected
+                        </div>
+</div>
+</div>
+</div>
+<!-- Main Chart Area -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-lg">
+<div class="flex justify-between items-center mb-lg border-b border-outline-variant pb-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Throughput Volume</h2>
+<div class="flex gap-sm">
+<button class="font-code-sm text-code-sm px-sm py-xs rounded bg-surface-variant text-on-surface hover:bg-surface-bright transition-colors">1H</button>
+<button class="font-code-sm text-code-sm px-sm py-xs rounded bg-primary-container text-on-primary-container border border-primary/30">24H</button>
+<button class="font-code-sm text-code-sm px-sm py-xs rounded bg-surface-variant text-on-surface hover:bg-surface-bright transition-colors">7D</button>
+</div>
+</div>
+<!-- Faux Chart Representation -->
+<div class="h-64 relative w-full flex items-end gap-xs px-sm pb-md">
+<!-- Y-axis labels -->
+<div class="absolute left-0 top-0 bottom-md flex flex-col justify-between font-code-sm text-code-sm text-on-surface-variant pr-sm border-r border-outline-variant">
+<span>5k</span>
+<span>4k</span>
+<span>3k</span>
+<span>2k</span>
+<span>1k</span>
+<span>0</span>
+</div>
+<!-- Chart Bars (Faux data) -->
+<div class="flex-grow flex items-end justify-between pl-md h-full relative">
+<!-- Horizontal Grid Lines -->
+<div class="absolute inset-0 pl-md flex flex-col justify-between pointer-events-none opacity-10">
+<div class="w-full h-px bg-on-surface-variant"></div>
+<div class="w-full h-px bg-on-surface-variant"></div>
+<div class="w-full h-px bg-on-surface-variant"></div>
+<div class="w-full h-px bg-on-surface-variant"></div>
+<div class="w-full h-px bg-on-surface-variant"></div>
+<div class="w-full h-px bg-transparent"></div> <!-- Base line -->
+</div>
+<!-- Bar Elements -->
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 30%">
+<div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container-highest border border-outline-variant px-2 py-1 rounded font-code-sm text-code-sm text-on-surface z-10">1.5k</div>
+</div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 45%"></div>
+<div class="w-[3%] bg-primary/60 hover:bg-primary transition-colors rounded-t cursor-crosshair relative group" style="height: 60%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 40%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 55%"></div>
+<div class="w-[3%] bg-primary/80 hover:bg-primary transition-colors rounded-t cursor-crosshair relative group border-t-2 border-primary" style="height: 85%"></div>
+<div class="w-[3%] bg-primary/60 hover:bg-primary transition-colors rounded-t cursor-crosshair relative group" style="height: 70%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 50%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 35%"></div>
+<div class="w-[3%] bg-primary/60 hover:bg-primary transition-colors rounded-t cursor-crosshair relative group" style="height: 65%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 45%"></div>
+<div class="w-[3%] bg-error/60 hover:bg-error transition-colors rounded-t cursor-crosshair relative group border border-error-container" style="height: 20%">
+<!-- Faux Error Indicator on a bar -->
+<div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-error-container border border-error px-2 py-1 rounded font-code-sm text-code-sm text-on-error z-10">Drop</div>
+</div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 40%"></div>
+<div class="w-[3%] bg-primary/60 hover:bg-primary transition-colors rounded-t cursor-crosshair relative group" style="height: 75%"></div>
+<div class="w-[3%] bg-primary/80 hover:bg-primary transition-colors rounded-t cursor-crosshair relative group border-t-2 border-primary" style="height: 90%">
+<div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-surface-container-highest border border-outline-variant px-2 py-1 rounded font-code-sm text-code-sm text-on-surface z-10">4.5k</div>
+</div>
+<div class="w-[3%] bg-primary/60 hover:bg-primary transition-colors rounded-t cursor-crosshair relative group" style="height: 60%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 55%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 45%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 50%"></div>
+<div class="w-[3%] bg-primary/40 hover:bg-primary/80 transition-colors rounded-t cursor-crosshair relative group" style="height: 65%"></div>
+</div>
+</div>
+<!-- X-axis labels -->
+<div class="flex justify-between pl-md pt-sm font-code-sm text-code-sm text-on-surface-variant border-t border-outline-variant">
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>12:00</span>
+<span>16:00</span>
+<span>20:00</span>
+</div>
+</div>
+<!-- Recent System Events Table -->
+<div class="bg-surface-container-high border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-md border-b border-outline-variant bg-surface-container flex justify-between items-center">
+<h2 class="font-code-md text-code-md text-on-surface uppercase tracking-wider">System Event Log</h2>
+<button class="font-code-sm text-code-sm text-primary hover:text-primary-fixed-dim transition-colors">View All Logs</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container-low font-code-sm text-code-sm text-on-surface-variant">
+<th class="p-sm font-normal">Timestamp</th>
+<th class="p-sm font-normal">Level</th>
+<th class="p-sm font-normal">Service</th>
+<th class="p-sm font-normal">Message</th>
+</tr>
+</thead>
+<tbody class="font-code-sm text-code-sm">
+<tr class="border-b border-outline-variant hover:bg-surface-variant/50 transition-colors">
+<td class="p-sm text-on-surface-variant">2024-05-24 14:32:01</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-sm bg-surface-bright border border-outline-variant text-on-surface">INFO</span>
+</td>
+<td class="p-sm text-primary">router-svc</td>
+<td class="p-sm text-on-surface">Successfully routed 450 orders to DL_API_V2</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-variant/50 transition-colors">
+<td class="p-sm text-on-surface-variant">2024-05-24 14:30:15</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-sm bg-surface-bright border border-outline-variant text-on-surface">INFO</span>
+</td>
+<td class="p-sm text-primary">auth-gateway</td>
+<td class="p-sm text-on-surface">API Key rotation completed for tenant T-8492</td>
+</tr>
+<tr class="border-b border-outline-variant bg-error-container/10 hover:bg-error-container/20 transition-colors">
+<td class="p-sm text-on-surface-variant">2024-05-24 14:28:44</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-sm bg-error-container text-on-error-container border border-error/50">WARN</span>
+</td>
+<td class="p-sm text-primary">webhook-processor</td>
+<td class="p-sm text-error">Latency spike detected in SR upstream response (&gt;800ms)</td>
+</tr>
+<tr class="hover:bg-surface-variant/50 transition-colors">
+<td class="p-sm text-on-surface-variant">2024-05-24 14:25:00</td>
+<td class="p-sm">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-sm bg-surface-bright border border-outline-variant text-on-surface">INFO</span>
+</td>
+<td class="p-sm text-primary">health-check</td>
+<td class="p-sm text-on-surface">System health check passed. All nodes operational.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest text-secondary dark:text-secondary font-code-sm text-code-sm relative bottom-0 w-full border-t border-outline-variant dark:border-outline-variant flex justify-between items-center py-md px-lg ml-[280px] w-[calc(100%-280px)] z-40">
+<div class="font-label-caps text-label-caps text-on-surface-variant">
+            © 2024 Shipping Bridge Systems. Performance Tier: Enterprise.
+        </div>
+<div class="flex gap-md">
+<a class="text-secondary dark:text-secondary underline opacity-80 hover:opacity-100 transition-opacity hover:text-secondary-fixed-dim" href="#">Documentation</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant opacity-80 hover:opacity-100 transition-opacity hover:text-secondary-fixed-dim" href="#">API Status</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant opacity-80 hover:opacity-100 transition-opacity hover:text-secondary-fixed-dim" href="#">Terms of Service</a>
+</div>
+</footer>
+</body></html>

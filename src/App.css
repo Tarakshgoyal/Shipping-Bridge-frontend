@@ -1,0 +1,387 @@
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  background: var(--surface);
+  color: var(--on-surface);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid var(--outline-variant);
+  background: var(--surface-lowest);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.brand-block,
+.topbar,
+.status-strip,
+.endpoint-row,
+.timeline-step {
+  display: flex;
+  align-items: center;
+}
+
+.brand-block {
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--primary-container);
+  color: var(--on-primary-container);
+  font-family: var(--mono);
+  font-weight: 700;
+}
+
+.brand-block h1,
+.topbar h2,
+.panel-heading h3 {
+  margin: 0;
+  letter-spacing: 0;
+}
+
+.brand-block h1 {
+  font-size: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--on-surface-variant);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.nav-list {
+  display: grid;
+  gap: 8px;
+}
+
+.nav-item,
+button {
+  border: 1px solid var(--outline-variant);
+  border-radius: 4px;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  min-height: 40px;
+  padding: 0 14px;
+  font: 600 13px/1 var(--mono);
+  cursor: pointer;
+}
+
+.nav-item {
+  text-align: left;
+}
+
+.nav-item.active,
+button:hover,
+button:focus-visible {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary-container) 38%, var(--surface-container));
+  outline: none;
+}
+
+.session-card,
+.tool-panel,
+.response-panel,
+.metric-card,
+.endpoint-table {
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  background: var(--surface-container-low);
+}
+
+.session-card {
+  margin-top: auto;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+code,
+pre {
+  font-family: var(--mono);
+}
+
+code {
+  color: var(--primary);
+}
+
+.pill {
+  width: fit-content;
+  border-radius: 999px;
+  border: 1px solid var(--outline-variant);
+  padding: 5px 8px;
+  color: var(--on-surface-variant);
+  font: 700 11px/1 var(--mono);
+}
+
+.pill.success {
+  color: var(--secondary);
+  border-color: color-mix(in srgb, var(--secondary) 50%, transparent);
+}
+
+.workspace {
+  min-width: 0;
+  padding: 24px;
+}
+
+.topbar {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.topbar h2 {
+  font-size: 28px;
+}
+
+.status-strip {
+  gap: 8px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  font-size: 13px;
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  background: var(--outline);
+}
+
+.dot.good {
+  background: var(--secondary);
+}
+
+.dot.bad {
+  background: var(--error);
+}
+
+.dot.warn {
+  background: var(--tertiary);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 24px;
+  align-items: start;
+}
+
+.panel-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.split-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tool-panel,
+.response-panel {
+  padding: 18px;
+}
+
+.tool-panel.compact {
+  display: grid;
+  gap: 12px;
+}
+
+.panel-heading {
+  margin-bottom: 16px;
+}
+
+.panel-heading h3 {
+  font-size: 18px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.form-grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 14px;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: var(--on-surface-variant);
+  font-size: 13px;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--outline-variant);
+  border-radius: 4px;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  min-height: 40px;
+  padding: 0 11px;
+  font: 500 14px/1 var(--sans);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.tool-panel button {
+  margin-top: 14px;
+}
+
+.muted {
+  color: var(--on-surface-variant);
+  margin: 0 0 16px;
+}
+
+.response-panel {
+  position: sticky;
+  top: 24px;
+}
+
+pre {
+  margin: 0;
+  min-height: 420px;
+  max-height: calc(100vh - 190px);
+  overflow: auto;
+  border-radius: 6px;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  color: var(--secondary);
+  padding: 14px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.timeline-step {
+  gap: 12px;
+  border: 1px solid var(--outline-variant);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--surface-container-low);
+}
+
+.timeline-step span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--outline);
+}
+
+.timeline-step.active span {
+  background: var(--secondary);
+}
+
+.timeline-step strong,
+.metric-card strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.endpoint-table {
+  overflow: hidden;
+}
+
+.endpoint-row {
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.endpoint-row:last-child {
+  border-bottom: 0;
+}
+
+.endpoint-row p {
+  margin: 0;
+  color: var(--on-surface-variant);
+}
+
+.method {
+  width: 52px;
+  border-radius: 999px;
+  padding: 5px 0;
+  text-align: center;
+  font: 800 11px/1 var(--mono);
+}
+
+.method.post {
+  background: color-mix(in srgb, var(--primary-container) 28%, transparent);
+  color: var(--primary);
+}
+
+.method.get {
+  background: color-mix(in srgb, var(--secondary) 18%, transparent);
+  color: var(--secondary);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.metric-card {
+  min-height: 130px;
+  padding: 18px;
+  position: relative;
+}
+
+.metric-card .dot {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+}
+
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .content-grid,
+  .split-panels,
+  .form-grid,
+  .form-grid.two,
+  .timeline,
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .response-panel {
+    position: static;
+  }
+}
