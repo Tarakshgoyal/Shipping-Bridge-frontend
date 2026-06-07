@@ -40,14 +40,14 @@ function App() {
     return `Basic ${btoa(`${savedCredentials.username}:${savedCredentials.password}`)}`
   }, [savedCredentials])
 
-  async function request(path: string, options: RequestInit = {}, title = path) {
+  async function request(path: string, options: RequestInit = {}, title = path, includeAuth = true) {
     setStatus(`Calling ${path}`)
     try {
       const response = await fetch(`${API_BASE}${path}`, {
         ...options,
         headers: {
           'Content-Type': 'application/json',
-          ...(authHeader ? { Authorization: authHeader } : {}),
+          ...(includeAuth && authHeader ? { Authorization: authHeader } : {}),
           ...options.headers,
         },
       })
@@ -77,6 +77,7 @@ function App() {
       '/api/auth/register',
       { method: 'POST', body: JSON.stringify(payload), headers: {} },
       'Register user',
+      false,
     )
     if (outcome?.response.ok) {
       setCredentials({ username, password })
@@ -99,7 +100,7 @@ function App() {
     event.preventDefault()
     const form = new FormData(event.currentTarget)
     const token = encodeURIComponent(String(form.get('token') ?? ''))
-    await request(`/api/auth/verify?token=${token}`, { method: 'GET', headers: {} }, 'Verify email')
+    await request(`/api/auth/verify?token=${token}`, { method: 'GET', headers: {} }, 'Verify email', false)
   }
 
   async function calculate(event: FormEvent<HTMLFormElement>) {
@@ -155,7 +156,7 @@ function App() {
   }
 
   async function fetchDocs() {
-    await request('/v3/docs', { method: 'GET', headers: {} }, 'OpenAPI JSON')
+    await request('/v3/docs', { method: 'GET', headers: {} }, 'OpenAPI JSON', false)
   }
 
   return (
