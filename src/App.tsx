@@ -16,6 +16,7 @@ type ApiResult = {
 }
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'https://shipping-bridge-backend.onrender.com'
+const PROVIDER_NAME = 'Shiprocket'
 
 const initialCredentials: Credentials = {
   username: '',
@@ -192,6 +193,7 @@ function App() {
         <div className="session-card">
           <p className="eyebrow">Backend</p>
           <code>{API_BASE}</code>
+          <span className="pill provider">SHIPROCKET</span>
           <span className={savedCredentials ? 'pill success' : 'pill'}>{savedCredentials ? 'AUTH READY' : 'NO AUTH'}</span>
         </div>
       </aside>
@@ -202,9 +204,15 @@ function App() {
             <p className="eyebrow">Spring Boot Bridge</p>
             <h2>{titleFor(view)}</h2>
           </div>
-          <div className="status-strip">
-            <span className={result.ok ? 'dot good' : 'dot bad'}></span>
-            <span>{status}</span>
+          <div className="topbar-actions">
+            <div className="provider-badge">
+              <span className="dot good"></span>
+              <span>{PROVIDER_NAME} live mode</span>
+            </div>
+            <div className="status-strip">
+              <span className={result.ok ? 'dot good' : 'dot bad'}></span>
+              <span>{status}</span>
+            </div>
           </div>
         </header>
 
@@ -341,11 +349,13 @@ function OrdersPanel({
 }) {
   return (
     <div className="panel-stack">
+      <ShiprocketStatusPanel />
+
       <section className="split-panels">
         <form className="tool-panel" onSubmit={onCalculate}>
           <div className="panel-heading">
             <p className="eyebrow">POST /api/shipping/calculate</p>
-            <h3>Rate calculator</h3>
+            <h3>Shiprocket rate calculator</h3>
           </div>
           <label>
             Pickup pincode
@@ -378,7 +388,7 @@ function OrdersPanel({
       <form className="tool-panel" onSubmit={onCreateOrder}>
         <div className="panel-heading">
           <p className="eyebrow">POST /api/orders</p>
-          <h3>Create shipment order</h3>
+          <h3>Create Shiprocket shipment</h3>
         </div>
         <div className="form-grid two">
           <label>
@@ -406,9 +416,25 @@ function OrdersPanel({
             <input name="amount" type="number" step="0.01" defaultValue="1200" required />
           </label>
         </div>
-        <button type="submit">Create Order</button>
+        <button type="submit">Create Order and Assign AWB</button>
       </form>
     </div>
+  )
+}
+
+function ShiprocketStatusPanel() {
+  return (
+    <section className="shiprocket-panel">
+      <div>
+        <p className="eyebrow">Provider</p>
+        <h3>Shiprocket external API</h3>
+      </div>
+      <div className="provider-flow" aria-label="Shiprocket request flow">
+        {['API user login', 'Serviceability', 'Adhoc order', 'AWB assignment', 'AWB tracking'].map((step) => (
+          <span key={step}>{step}</span>
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -426,7 +452,7 @@ function TrackingPanel({
       <form className="tool-panel" onSubmit={onRefreshTracking}>
         <div className="panel-heading">
           <p className="eyebrow">GET /api/orders/:id/tracking</p>
-          <h3>Real-time tracking sync</h3>
+          <h3>Shiprocket AWB tracking sync</h3>
         </div>
         <label>
           Order ID
@@ -435,7 +461,7 @@ function TrackingPanel({
         <button type="submit">Refresh Tracking</button>
       </form>
       <div className="timeline">
-        {['CREATED', 'PICKED_UP', 'IN_TRANSIT', 'DELIVERED'].map((step, index) => (
+        {['CREATED', 'AWB_ASSIGNED', 'IN_TRANSIT', 'DELIVERED'].map((step, index) => (
           <div className={index < 3 ? 'timeline-step active' : 'timeline-step'} key={step}>
             <span></span>
             <div>
@@ -457,19 +483,36 @@ function DocsPanel({ onFetchDocs }: { onFetchDocs: () => void }) {
           <p className="eyebrow">GET /v3/docs</p>
           <h3>API documentation portal</h3>
         </div>
-        <p className="muted">Fetch the backend OpenAPI JSON and inspect the schema from the response panel.</p>
+        <p className="muted">Fetch the backend OpenAPI JSON and inspect the Shiprocket-backed shipping schema from the response panel.</p>
         <button type="button" onClick={onFetchDocs}>
           Load OpenAPI JSON
         </button>
+      </section>
+      <section className="tool-panel">
+        <div className="panel-heading">
+          <p className="eyebrow">Shiprocket runtime</p>
+          <h3>Backend environment needed on Render</h3>
+        </div>
+        <div className="env-grid">
+          {[
+            'LOGISTICS_PROVIDER=shiprocket',
+            'SHIPROCKET_EMAIL=<api-user-email>',
+            'SHIPROCKET_PASSWORD=<api-user-password>',
+            'SHIPROCKET_PICKUP_LOCATION=Primary',
+            'SHIPROCKET_PICKUP_POSTCODE=110001',
+          ].map((item) => (
+            <code key={item}>{item}</code>
+          ))}
+        </div>
       </section>
       <section className="endpoint-table">
         {[
           ['POST', '/api/auth/register', 'Create an account and send verification email'],
           ['GET', '/api/auth/verify', 'Verify email token'],
-          ['POST', '/api/shipping/calculate', 'Calculate shipping rate'],
-          ['POST', '/api/orders', 'Create shipment order'],
+          ['POST', '/api/shipping/calculate', 'Calculate Shiprocket serviceability and rate'],
+          ['POST', '/api/orders', 'Create Shiprocket order and assign AWB'],
           ['GET', '/api/orders/{id}', 'Fetch local order'],
-          ['GET', '/api/orders/{id}/tracking', 'Sync tracking status'],
+          ['GET', '/api/orders/{id}/tracking', 'Sync Shiprocket AWB tracking status'],
         ].map(([method, path, description]) => (
           <div className="endpoint-row" key={path}>
             <span className={`method ${method.toLowerCase()}`}>{method}</span>
@@ -488,7 +531,8 @@ function MonitoringPanel({ authReady }: { authReady: boolean }) {
       {[
         ['API Base', API_BASE, 'good'],
         ['Auth State', authReady ? 'Credentials stored' : 'Waiting for credentials', authReady ? 'good' : 'warn'],
-        ['Provider', 'Shiprocket mock by default', 'good'],
+        ['Provider', 'Shiprocket external API', 'good'],
+        ['Shipment ID', 'AWB returned as trackingId', 'good'],
         ['Cache', 'In-memory Spring cache active', 'good'],
       ].map(([label, value, tone]) => (
         <div className="metric-card" key={label}>

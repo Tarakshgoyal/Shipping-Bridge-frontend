@@ -21,6 +21,8 @@
 .brand-block,
 .topbar,
 .status-strip,
+.topbar-actions,
+.provider-badge,
 .endpoint-row,
 .timeline-step {
   display: flex;
@@ -132,6 +134,11 @@ code {
   border-color: color-mix(in srgb, var(--secondary) 50%, transparent);
 }
 
+.pill.provider {
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 50%, transparent);
+}
+
 .workspace {
   min-width: 0;
   padding: 24px;
@@ -147,6 +154,12 @@ code {
   font-size: 28px;
 }
 
+.topbar-actions {
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .status-strip {
   gap: 8px;
   border: 1px solid var(--outline-variant);
@@ -155,6 +168,17 @@ code {
   background: var(--surface-container);
   color: var(--on-surface-variant);
   font-size: 13px;
+}
+
+.provider-badge {
+  gap: 8px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 45%, var(--outline-variant));
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: color-mix(in srgb, var(--secondary) 9%, var(--surface-container));
+  color: var(--on-surface);
+  font: 700 12px/1 var(--mono);
+  text-transform: uppercase;
 }
 
 .dot {
@@ -187,6 +211,39 @@ code {
 .panel-stack {
   display: grid;
   gap: 16px;
+}
+
+.shiprocket-panel {
+  border: 1px solid color-mix(in srgb, var(--primary) 42%, var(--outline-variant));
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--primary-container) 22%, transparent), transparent 58%),
+    var(--surface-container-low);
+  padding: 18px;
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+}
+
+.shiprocket-panel h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.provider-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.provider-flow span {
+  border: 1px solid var(--outline-variant);
+  border-radius: 999px;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  padding: 7px 10px;
+  font: 700 11px/1 var(--mono);
 }
 
 .split-panels {
@@ -255,6 +312,21 @@ input:focus {
 .muted {
   color: var(--on-surface-variant);
   margin: 0 0 16px;
+}
+
+.env-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.env-grid code {
+  display: block;
+  border: 1px solid var(--outline-variant);
+  border-radius: 4px;
+  background: var(--surface-container);
+  padding: 10px;
+  overflow-wrap: anywhere;
 }
 
 .response-panel {
@@ -374,10 +446,12 @@ pre {
 
   .content-grid,
   .split-panels,
+  .shiprocket-panel,
   .form-grid,
   .form-grid.two,
   .timeline,
-  .metrics-grid {
+  .metrics-grid,
+  .env-grid {
     grid-template-columns: 1fr;
   }
 
